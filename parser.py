@@ -1,16 +1,21 @@
 """Arg parser for scrapping (swedish) news paper"""
 
 import argparse
-
+import logging
 from omni import omni
 from nwt import nwt
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+c_handler = logging.StreamHandler()
+logger.addHandler(c_handler)
 
 url_dct = {'omni': 'https://omni.se', 'nwt': 'https://www.nwt.se'}
 
 def parser():
     # Create top-level parser
     parser = argparse.ArgumentParser(prog='news_scrapper', description='Scrap news papper')
-    parser.add_argument('-debug', action='store_true', help='Enable debug')
+    parser.add_argument('--debug', action='store_true', help='Enable debug')
     subparsers = parser.add_subparsers(title="commands", dest="command", help='sub-command', required=True)
 
     # Create parser for omni
@@ -30,5 +35,9 @@ def parser():
 
     args = parser.parse_args()
     setattr(args, 'url', url_dct[args.command])
-    # print(args)
+    
+    if args.debug:
+        logger.setLevel(logging.DEBUG)
+    logger.debug(f'parser: {args}')
+
     return args

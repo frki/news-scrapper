@@ -4,17 +4,24 @@ import re
 
 import requests
 from bs4 import BeautifulSoup as bs4
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(level=logging.INFO)
+c_handler = logging.StreamHandler()
+logger.addHandler(c_handler)
 
 
-def nwt(url, section):
+def nwt(url, section, debug):
     """Scrap NWT news paper, https://www.nwt.se"""
-    # TODO
+    if debug:
+        logger.setLevel(logging.DEBUG)
     if section:
         section = '/' + section
-    # print(f"Got url: {url}{section}")
+    logger.debug(f"Fetching url: {url}{section}")
     res = requests.get(url + section)
     soup = bs4(res.text, 'html.parser')
-    print(f"News from: {soup.title.text}\n")
+    logger.info(f"NWT News (section: {soup.title.text})\n")
     if not section:
         hrefs = soup.find_all('a', {'class': 'articles-list__link'})
     else:
@@ -27,4 +34,4 @@ def nwt(url, section):
         txt = href['title']
         if "NWT Media AB" in txt:  # removing link if exist
             continue
-        print(f"{txt} [{link}]")
+        logger.info(f"{txt} [{link}]")

@@ -12,7 +12,7 @@ this is a title [https://omni.se/page/for/title]
 2. setup environment 
    ```bash
    python3 -m venv .venv
-   source venv/bin/activate
+   source .venv/bin/activate
    pip install -r requirements.txt
    ```
 3. run `python news_scrapper.py`
@@ -20,17 +20,19 @@ this is a title [https://omni.se/page/for/title]
 _example_
 ```bash
 $ python news_scrapper.py -h
-usage: news_scrapper [-h] [-debug] {omni} ...
+usage: news_scrapper [-h] [--debug] {omni,nwt,dn} ...
 
 Scrap news papper
 
 optional arguments:
-  -h, --help  show this help message and exit
-  -debug      Enable debug
+  -h, --help     show this help message and exit
+  --debug        Enable debug
 
 commands:
-  {omni}      sub-command
-    omni      https://omni.se
+  {omni,nwt,dn}  sub-command
+    omni         https://omni.se
+    nwt          https://www.nwt.se/
+    dn           https://www.dn.se/
 ```
 
 _example: sub-command_
@@ -49,10 +51,10 @@ optional arguments:
 ## supported news pages
 - omni
 - nwt
+- dn
 
 
 _wish list_
 - aftonbladet
 - expressen
-- dn
 - other?

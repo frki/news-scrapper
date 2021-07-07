@@ -4,13 +4,14 @@ import argparse
 import logging
 from omni import omni
 from nwt import nwt
+from dn import dn
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 c_handler = logging.StreamHandler()
 logger.addHandler(c_handler)
 
-url_dct = {'omni': 'https://omni.se', 'nwt': 'https://www.nwt.se'}
+url_dct = {'omni': 'https://omni.se', 'nwt': 'https://www.nwt.se', 'dn': 'https://www.dn.se'}
 
 def parser():
     # Create top-level parser
@@ -32,6 +33,13 @@ def parser():
     parser_nwt.add_argument('--section', default='', choices=['nyheter', 'karlstadsliv'],
                              help='sub-section')
     parser_nwt.set_defaults(func=nwt)
+
+    # Create parser for dn
+    parser_dn = subparsers.add_parser('dn', help='https://www.dn.se/',
+                                           description='Scrap news from https://www.dn.se/')
+    parser_dn.add_argument('--section', default='', choices=['sthlm', 'sport'],
+                             help='sub-section')
+    parser_dn.set_defaults(func=dn)
 
     args = parser.parse_args()
     setattr(args, 'url', url_dct[args.command])
